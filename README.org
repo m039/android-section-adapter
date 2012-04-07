@@ -1,0 +1,42 @@
+* About
+  Currently this project contains two classes: SectionAdapter and
+  SectionListView.
+
+  With SectionAdapter you can create grouped or sectioned or separeted
+  listview.
+
+  And with the SectionListView you can create the list looks like iOS,
+  with pinned header above.
+
+* Notice
+  This project compiles only under android-11 target, it means that it
+  only runs on android version 3+.
+
+* Usage
+  Instead of documenting source code I created the demo project, try
+  to look at it in /demo/ folder.
+
+  The usage of adapter is extremely simple, but I'll try to make it
+  more simple:
+
+#+BEGIN_SRC java
+  return new SectionAdapter(new SectionAdapter.Constructor() {
+          // one for sections
+          public Adapter getMainSectionAdapter() {
+                return ...;
+          }
+
+          // each for section
+          public Adapter getSectionAdapter(Object s) {
+                return ...;
+          }
+  });
+#+END_SRC
+
+* Thanks
+  To [[http://jsharkey.org/blog/2008/08/18/separating-lists-with-headers-in-android-09/][Jeff Sharkey's lists]] and [[http://code.google.com/p/android-amazing-listview/][android-amazing-listview]] for some ideas
+  I've found in their source code.
+  
+* License
+  android-section-adapter is licensed under the terms of the Apache
+  2.0 license as listed in the LICENSE file.
