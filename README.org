@@ -15,6 +15,9 @@
   BTW SectionAdapter.java could be compiled under 2 version, but it
   isn't my goal.
 
+  *And* in this implementation there is no custom onItemClickListener,
+   I just forgot to implement.
+
 * Usage
   Instead of documenting source code I created the demo project, try
   to look at it in /demo/ folder.
