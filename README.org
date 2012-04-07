@@ -26,7 +26,7 @@
   more simple:
 
 #+BEGIN_SRC java
-  return new SectionAdapter(new SectionAdapter.Constructor() {
+   new SectionAdapter(new SectionAdapter.Constructor() {
           // one for sections
           public Adapter getMainSectionAdapter() {
                 return ...;
