@@ -44,5 +44,4 @@
   I've found in their source code.
   
 * License
-  android-section-adapter is licensed under the terms of the Apache
-  2.0 license as listed in the LICENSE file.
+  android-section-adapter is licensed under the terms of the Apache 2.0 license as listed in the LICENSE file.
