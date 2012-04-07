@@ -13,6 +13,8 @@ import android.util.Log;
 
 import com.m039.wf.SectionAdapter;
 import com.m039.wf.SectionListView;
+import android.content.Intent;
+import android.content.Context;
 
 public class SectionAdapterDemo extends Activity
 {
@@ -22,82 +24,32 @@ public class SectionAdapterDemo extends Activity
     {
         super.onCreate(savedInstanceState);
 
-        SectionListView list = new SectionListView(this);
 
-        list.setAdapter(createMainAdapter());
+
+        setContentView(R.layout.demo);
+    }
+
+    public void onDemoClick(View v) {
+        int id = v.getId();
+
+        Intent  i;
+        Context c = v.getContext();
         
-        list.setOnPushedUpListener(new SectionListView.OnPushedUpListener() {
-                public void onPushedUp(View pinnedView, float relativeDistance) {
-                    pinnedView.getBackground().setAlpha(200);
-                    
-                    pinnedView.setAlpha(relativeDistance);
-                }
-            });
-
-        list.setOnPinnedViewClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Toast.makeText(getBaseContext(), "on-pinned-view-click", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        setContentView(list);       
-    }
-
-    ListAdapter createMainAdapter() {
-        return new SectionAdapter(new SectionAdapter.Constructor() {
-                public Adapter getMainSectionAdapter() {
-                    List<String> data = new ArrayList<String>();
-
-                    int amount = 10;
-                    
-                    int distance = 0;
-                    
-                    for (int i = 0; i < amount; i++) {
-                        data.add("" + i * distance + "-" + (i + 1) * distance);
-                    }
-
-                    distance = 1;
-                    
-                    for (int i = 0; i < amount; i++) {
-                        data.add("" + i * distance + "-" + (i + 1) * distance);
-                    }                   
-
-                    distance = 5;
-                    
-                    for (int i = 0; i < amount; i++) {
-                        data.add("" + i * distance + "-" + (i + 1) * distance);
-                    }
-
-                    distance = 20;
-                    
-                    for (int i = 0; i < amount; i++) {
-                        data.add("" + i * distance + "-" + (i + 1) * distance);
-                    }                   
-                    
-                    return new ArrayAdapter<String>(getBaseContext(), R.layout.section, data);
-                }
-
-                public Adapter getSectionAdapter(Object s) {
-                    if (s instanceof String) {
-                        String str = (String) s;
-                        String parts[] = str.split("-");
-
-                        return createAdapter(Integer.parseInt(parts[0]),
-                                             Integer.parseInt(parts[1]));
-                    }
-
-                    return null;
-                }
-            });
-    }
-
-    Adapter createAdapter(int from, int to) {
-        List<String> data = new ArrayList<String>();
-
-        for (int i = from; i < to; i++) {
-            data.add(String.valueOf(i));
+        switch (id) {
+        case R.id.section_adapter_with_standard_listview:
+            i = new Intent(c, SectionAdapterWithStandardListView.class);
+            c.startActivity(i);
+            break;
+        case R.id.section_adapter_with_section_listview:
+            i = new Intent(c, SectionAdapterWithSectionListView.class);
+            c.startActivity(i);
+            break;
+        case R.id.section_adapter_with_section_listview_debug:
+            i = new Intent(c, SectionAdapterWithSectionListViewDebug.class);
+            c.startActivity(i);
+            break;          
+        default:
+            break;
         }
-        
-        return new ArrayAdapter<String>(this, R.layout.content, data);
     }
 }

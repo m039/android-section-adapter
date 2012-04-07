@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SectionAdapterDemo</string>
+    <string name="section_adapter_with_standard_listview_button">
+      Section adapter with <u>standard</u> listview
+    </string>
+    <string name="section_adapter_with_section_listview_button">
+      Section adapter with <u>section</u> listview
+    </string>
+    <string name="section_adapter_with_section_listview_debug_button">
+      Section adapter with <u>section</u> listview <b>debug</b>
+    </string>   
 </resources>

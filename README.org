@@ -12,6 +12,9 @@
   This project compiles only under android-11 target, it means that it
   only runs on android version 3+.
 
+  BTW SectionAdapter.java could be compiled under 2 version, but it
+  isn't my goal.
+
 * Usage
   Instead of documenting source code I created the demo project, try
   to look at it in /demo/ folder.

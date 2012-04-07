@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    >
+
+  <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Demos:"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        />
+
+    <!-- section adapter -->
+    
+    <Button
+        android:id="@+id/section_adapter_with_standard_listview"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:onClick="onDemoClick"
+        android:text="@string/section_adapter_with_standard_listview_button"
+        />
+    
+    <!-- section adapter + section listview -->
+    
+    <Button
+        android:id="@+id/section_adapter_with_section_listview"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:onClick="onDemoClick"       
+        android:text="@string/section_adapter_with_section_listview_button"
+        />  
+
+    <!-- section adapter + section listview + debugview -->
+    
+    <Button
+        android:id="@+id/section_adapter_with_section_listview_debug"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:onClick="onDemoClick"       
+        android:text="@string/section_adapter_with_section_listview_debug_button"
+        />
+    
+</LinearLayout>

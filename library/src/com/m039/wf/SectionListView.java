@@ -4,6 +4,18 @@
  *
  * Author: Mozgin Dmitry <flam44@gmail.com>
  *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
  */
 
 package com.m039.wf;
@@ -56,7 +68,7 @@ public class SectionListView extends ListView {
     // ------
 
     public  boolean                 mShowHideSections = true;
-    public  boolean                 mShowDebugTextView = true;
+    public  boolean                 mShowDebugTextView = false;
 
     public      SectionListView(Context context) {
         super(context);
@@ -90,6 +102,9 @@ public class SectionListView extends ListView {
     }
 
     void        initDebugTextView() {
+        if (mDebugTextView != null)
+            return;
+        
         mDebugTextView = new TextView(getContext());
 
         FrameLayout.LayoutParams lp = new  FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT,
@@ -378,6 +393,22 @@ public class SectionListView extends ListView {
 
     public View     getPinnedView() {
         return mPinnedView;
+    }
+
+    public void     setShowHideSections(boolean trigger) {
+        mShowHideSections = trigger;
+    }
+
+    public void     setShowDebugTextView(boolean show) {
+        // remove debug-textview
+        if (mDebugTextView != null) {
+            mOverlay.removeView(mDebugTextView);
+            mDebugTextView = null;
+        }
+
+        if (show) {
+            initDebugTextView();
+        }
     }
 
     // misc
