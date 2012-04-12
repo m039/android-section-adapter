@@ -15,6 +15,8 @@
   BTW SectionAdapter.java could be compiled under 2 version, but it
   isn't my goal.
 
+  *And* now there is another issue with the performance in fling event.
+
 * Usage
   Instead of documenting source code I created the demo project, try
   to look at it in /demo/ folder.
