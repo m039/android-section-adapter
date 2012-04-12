@@ -39,28 +39,23 @@ import android.util.Log;
  * @version
  * @since
  */
-public class SectionAdapter extends BaseAdapter {
-    private static final String TAG = "m039";
+abstract public  class SectionAdapter extends SectionBaseAdapter {
+    abstract public Adapter  createMainSectionAdapter();
+    abstract public Adapter  createSectionAdapter(Object s);
 
-    Adapter                 mMainSectionAdapter     = null;
-    Map<Object, Adapter>    mSectionAdapters        = new HashMap<Object, Adapter>();
-
-    // simplify some things
-
-    public interface Constructor {
-        public Adapter getMainSectionAdapter();
-        public Adapter getSectionAdapter(Object section);
+    public SectionAdapter() {
+        reinit();
     }
 
-    // public SectionAdapter() {
-    // }
-
-    public SectionAdapter(Constructor c) {
-        init(c);
+    void clear() {
+        mMainSectionAdapter = null;
+        mSectionAdapters.clear();
     }
-
-    public void     init(Constructor c) {
-        mMainSectionAdapter = c.getMainSectionAdapter();
+    
+    public void     reinit() {
+        clear();
+        
+        mMainSectionAdapter = createMainSectionAdapter();
 
         if (mMainSectionAdapter == null)
             return;
@@ -70,260 +65,11 @@ public class SectionAdapter extends BaseAdapter {
         for (int i = 0; i < sections; i++) {
             Object s = mMainSectionAdapter.getItem(i);
 
-            Adapter a = c.getSectionAdapter(s);
+            Adapter a = createSectionAdapter(s);
 
             if (a != null)
                 addSectionAdapter(s, a);
         }
-    }
-
-    public void     setMainSectionAdapter(Adapter a) {
-        mMainSectionAdapter = a;
-    }
-
-    public Adapter  getMainSectionAdapter() {
-        return mMainSectionAdapter;
-    }
-
-    public void     addSectionAdapter(Object s, Adapter a) {
-        mSectionAdapters.put(s, a);
-    }
-
-    public Adapter  getSectionAdapter(Object s) {
-        return mSectionAdapters.get(s);
-    }
-
-    public Object   getSection(int index) {
-        int sections = mMainSectionAdapter.getCount();
-
-        if (index >= sections)
-            return null;
-
-        return mMainSectionAdapter.getItem(index);
-    }
-
-    /**
-     * Returns int[3], where:
-     *
-     * res[0] - previous section position
-     * res[1] - current section position
-     * res[2] - next section position
-     */
-    public int[]        getSectionsAtPosition(int position) {
-        int res[] = new int[3];
-
-        int index = getSectionIndexAtPosition(position);
-
-        res[0] = getSectionPositionAtIndex(index - 1);
-        res[1] = getSectionPositionAtIndex(index);
-        res[2] = getSectionPositionAtIndex(index + 1);
-
-        return res;
-    }
-
-    public int          getSectionPositionAtIndex(int index) {
-        int sections = mMainSectionAdapter.getCount();
-
-        int p = 0;
-
-        for (int i = 0; i < sections; i++) {
-            if (i == index)
-                return p;
-
-            p++;
-
-            Object s = mMainSectionAdapter.getItem(i);
-
-            // go through childs
-            if (s != null) {
-                Adapter a = getSectionAdapter(s);
-
-                if (a != null) {
-                    p += a.getCount();
-                }
-            }
-        }
-
-        return -1;
-    }
-
-    public int          getSectionIndexAtPosition(int position) {
-        int sections = mMainSectionAdapter.getCount();
-
-        int p = 0;
-
-        for (int i = 0; i < sections; i++) {
-            if (p == position)
-                return i;
-
-            p++;
-
-            Object s = mMainSectionAdapter.getItem(i);
-
-            // go through childs
-            if (s != null) {
-                Adapter a = getSectionAdapter(s);
-
-                if (a != null) {
-                    int childs = a.getCount();
-
-                    if (position - p < childs) {
-                        return i;
-                    }
-
-                    p += childs;
-                }
-            }
-        }
-
-        return -1;
-    }
-
-    public final static int SECTION_T = 0;
-    public final static int CONTENT_T = 1;
-
-    public final static int TYPE_COUNT = CONTENT_T + 1;
-
-    @Override
-    public int      getItemViewType(int position) {
-        int sections = mMainSectionAdapter.getCount();
-
-        int p = 0;
-
-        for (int i = 0; i < sections; i++) {
-            Object s = mMainSectionAdapter.getItem(i);
-
-            if (p == position)
-                return SECTION_T;
-
-            p++;
-
-            // go through childs
-            if (s != null) {
-                Adapter a = getSectionAdapter(s);
-
-                if (a != null) {
-                    int childs = a.getCount();
-
-                    if (position - p < childs) {
-                        return CONTENT_T;
-                    }
-
-                    p += childs;
-                }
-            }
-        }
-
-        return -1;
-    }
-
-    @Override
-    public boolean  isEnabled(int position) {
-        return getItemViewType(position) != SECTION_T;
-    }
-
-    @Override
-    public int      getViewTypeCount () {
-        return TYPE_COUNT;
-    }
-
-    @Override
-    public View     getView(int position, View convertView, ViewGroup parent) {
-        // Log.d(TAG, "pos: " + position);
-
-        int sections = mMainSectionAdapter.getCount();
-
-        int p = 0;
-
-        for (int i = 0; i < sections; i++) {
-            // Log.d(TAG, "p = " + p);
-
-            if (p == position) {
-                return mMainSectionAdapter.getView(i, convertView, parent);
-            }
-
-            p++;
-
-            Object s = mMainSectionAdapter.getItem(i);
-            // Log.d(TAG, "s = " + s);
-
-            // go through childs
-            if (s != null) {
-                Adapter a = getSectionAdapter(s);
-                // Log.d(TAG, "a = " + a);
-
-                if (a != null) {
-                    int childs = a.getCount();
-
-                    if (position - p < childs) {
-                        return a.getView(position - p, convertView, parent);
-                    }
-
-                    p += childs;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    
-
-    @Override
-    public long     getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public Object   getItem(int position) {
-        int sections = mMainSectionAdapter.getCount();
-
-        int p = 0;
-
-        for (int i = 0; i < sections; i++) {
-            Object s = mMainSectionAdapter.getItem(i);
-
-            if (p == position)
-                return s;
-
-            p++;
-
-            // go through childs
-            if (s != null) {
-                Adapter a = getSectionAdapter(s);
-
-                if (a != null) {
-                    int childs = a.getCount();
-
-                    if (position - p < childs) {
-                        return a.getItem(position - p);
-                    }
-
-                    p += childs;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public int      getCount() {
-        int sections = mMainSectionAdapter.getCount();
-        int childs = 0;
-
-        for (int i = 0; i < sections; i++) {
-            Object s = mMainSectionAdapter.getItem(i);
-
-            if (s != null) {
-                Adapter a = getSectionAdapter(s);
-
-                if (a != null)
-                    childs += a.getCount();
-            }
-        }
-
-        return sections + childs;
     }
 
 } // SectionsAdapter

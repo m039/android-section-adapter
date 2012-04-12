@@ -26,6 +26,7 @@ public class SectionAdapterWithSectionListView extends Activity
         SectionListView list = new SectionListView(this);
 
         list.setAdapter(AdapterUtils.createSectionAdapter(this));
+        list.setOnItemClickListener(AdapterUtils.createOnItemClickListener(this));      
 
         list.setOnPushedUpListener(new SectionListView.OnPushedUpListener() {
                 public void onPushedUp(View pinnedView, float relativeDistance) {

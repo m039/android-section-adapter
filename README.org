@@ -15,9 +15,6 @@
   BTW SectionAdapter.java could be compiled under 2 version, but it
   isn't my goal.
 
-  *And* in this implementation there is no custom onItemClickListener,
-   I just forgot to implement.
-
 * Usage
   Instead of documenting source code I created the demo project, try
   to look at it in /demo/ folder.
@@ -26,19 +23,35 @@
   more simple:
 
 #+BEGIN_SRC java
-   new SectionAdapter(new SectionAdapter.Constructor() {
+   new SectionAdapter() {
           // one for sections
-          public Adapter getMainSectionAdapter() {
+          public Adapter createMainSectionAdapter() {
                 return ...;
           }
 
           // each for section
-          public Adapter getSectionAdapter(Object s) {
+          public Adapter createSectionAdapter(Object s) {
                 return ...;
           }
-  });
+  };
 #+END_SRC
 
+  And example of the listener:
+  
+#+BEGIN_SRC java
+    new AdapterView.OnItemClickListener() {
+            public void onItemClick (AdapterView<?> parent, View view, int position, long id) {
+                SectionAdapter a = (SectionAdapter) parent.getAdapter();
+
+                String msg =  "Click on position: " + position +
+                    ", section: " + a.getSection(position) + 
+                    ", item: " + a.getItem(position);
+                
+                Toast.makeText(c, msg , Toast.LENGTH_SHORT).show();
+            }
+        }  
+#+END_SRC
+  
 * Thanks
   To [[http://jsharkey.org/blog/2008/08/18/separating-lists-with-headers-in-android-09/][Jeff Sharkey's lists]] and [[http://code.google.com/p/android-amazing-listview/][android-amazing-listview]] for some ideas
   I've found in their source code.

@@ -26,6 +26,7 @@ public class SectionAdapterWithStandardListView extends Activity
         ListView list = new ListView(this);
 
         list.setAdapter(AdapterUtils.createSectionAdapter(this));
+        list.setOnItemClickListener(AdapterUtils.createOnItemClickListener(this));
 
         setContentView(list);
     }

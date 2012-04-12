@@ -26,6 +26,7 @@ public class SectionAdapterWithSectionListViewDebug extends Activity
         SectionListView list = new SectionListView(this);
        
         list.setAdapter(AdapterUtils.createSectionAdapter(this));
+        list.setOnItemClickListener(AdapterUtils.createOnItemClickListener(this));      
 
         list.setShowHideSections(false);
         list.setShowDebugTextView(true);        

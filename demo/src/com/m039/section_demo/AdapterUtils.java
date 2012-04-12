@@ -15,6 +15,10 @@ import android.content.Context;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import com.m039.wf.SectionAdapter;
+import android.util.Log;
+import android.widget.AdapterView;
+import android.widget.Toast;
+import android.view.View;
 
 /**
  * 
@@ -27,25 +31,43 @@ import com.m039.wf.SectionAdapter;
  */
 public class AdapterUtils {
 
-    static ListAdapter  createSectionAdapter(final Context c) {
-        return new SectionAdapter(new SectionAdapter.Constructor() {
-                public Adapter getMainSectionAdapter() {
-                    return AdapterUtils.createMainSectionAdapter(c);
+    static ListAdapter                      createSectionAdapter(final Context c) {
+        return new SectionAdapter() {
+            public Adapter createMainSectionAdapter() {
+                Log.d(TAG, "getMainSectionAdapter");
+                
+                return AdapterUtils.createMainSectionAdapter(c);
+            }
+
+            public Adapter createSectionAdapter(Object s) {
+                Log.d(TAG, "getSectionAdapter: " + s);
+                
+                if (s instanceof String) {
+                    String str = (String) s;
+                    String parts[] = str.split("-");
+
+                    return AdapterUtils.createSectionAdapter(c,
+                                                             Integer.parseInt(parts[0]),
+                                                             Integer.parseInt(parts[1]));
                 }
 
-                public Adapter getSectionAdapter(Object s) {
-                    if (s instanceof String) {
-                        String str = (String) s;
-                        String parts[] = str.split("-");
+                return null;
+            }
+        };
+    }
 
-                        return AdapterUtils.createSectionAdapter(c,
-                                                                 Integer.parseInt(parts[0]),
-                                                                 Integer.parseInt(parts[1]));
-                    }
+    static AdapterView.OnItemClickListener  createOnItemClickListener(final Context c) {
+        return new AdapterView.OnItemClickListener() {
+            public void onItemClick (AdapterView<?> parent, View view, int position, long id) {
+                SectionAdapter a = (SectionAdapter) parent.getAdapter();
 
-                    return null;
-                }
-            });
+                String msg =  "Click on position: " + position +
+                    ", section: " + a.getSection(position) + 
+                    ", item: " + a.getItem(position);
+                
+                Toast.makeText(c, msg , Toast.LENGTH_SHORT).show();
+            }
+        };
     }
     
     static Adapter      createMainSectionAdapter(Context c) {
