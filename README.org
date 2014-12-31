@@ -9,10 +9,9 @@
   with pinned header above.
 
 * Notice
-  This project compiles only under android-11 target, it means that it
-  only runs on android version 3+.
+  This project runs only with android-11 and above.
 
-  BTW SectionAdapter.java could be compiled under 2 version, but it
+  BTW SectionAdapter.java could be compiled with lower versions, but it
   isn't my goal.
 
   *And* now there is another issue with the performance in fling event.
